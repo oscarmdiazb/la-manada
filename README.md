@@ -12,13 +12,14 @@ App familiar de ejercicio y buena comida. Sin dependencias (Node ≥ 18), datos 
 - Idioma ES/EN con el botón del encabezado.
 
 ## Online (para toda la familia, gratis)
-URL: **https://sxfbzcnsbcvitaenwpct.supabase.co/functions/v1/la-manada/**
-Corre como Supabase Edge Function (`supabase/functions/la-manada/`). Pide la clave de familia (está en `.env.local`).
+URL: **https://oscarmdiazb.github.io/la-manada/** (pantalla en GitHub Pages, rama `gh-pages` del repo `oscarmdiazb/la-manada`).
+API: Supabase Edge Function `la-manada` (`supabase/functions/la-manada/`). Pide la clave de familia (está en `.env.local`).
 En el celular: abrir la URL → "Agregar a pantalla de inicio".
 
-Volver a publicar después de cambiar `core.mjs` o `public/`:
+Volver a publicar:
 ```bash
-./build-edge.sh
+./deploy-web.sh   # cambios en public/ (pantalla)
+./build-edge.sh   # cambios en core.mjs (API)
 ```
 Cambiar la clave: editar `.env.local` y correr `supabase secrets set --env-file la-manada/.env.local` desde `~/oscar-personal-apps`.
 Nota: la versión online se actualiza por sondeo cada 8 s (no SSE). Dos toques en el mismo cuarto de segundo pueden pisarse; para una familia no importa.
