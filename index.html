@@ -1,0 +1,567 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>La Manada</title>
+<meta name="theme-color" content="#2F6F5E">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="La Manada">
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="icon" href="icon.svg">
+<link rel="apple-touch-icon" href="icon.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fredoka:wght@400;500;600;700&family=Nunito+Sans:ital,wght@0,400;0,600;0,700;0,800;1,400&display=swap">
+<style>
+:root{
+  --bg:#F2F6F1; --surface:#FFFFFF; --surface2:#E8EFE6; --ink:#1B2A21; --muted:#5E6E64; --line:#D7E1D6;
+  --pine:#2F6F5E; --pine-ink:#FFFFFF; --pine-soft:#DCEDE4;
+  --mango:#FFB703; --mango-ink:#3A2A00; --mango-soft:#FFF1C7;
+  --coral:#F25F5C; --coral-soft:#FFE0DE;
+  --sky:#5FA8D3; --sky-soft:#DDEFF8;
+  --grape:#8E6BBF;
+  --shadow:0 6px 20px rgba(27,42,33,.08);
+  --r:20px;
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    --bg:#101B15; --surface:#182620; --surface2:#213229; --ink:#EAF2EC; --muted:#9DB0A4; --line:#2C3F35;
+    --pine:#4FA98F; --pine-ink:#08130E; --pine-soft:#1E3A30;
+    --mango:#FFC53D; --mango-ink:#2A1E00; --mango-soft:#3D3010;
+    --coral:#FF7A76; --coral-soft:#3F2322;
+    --sky:#7CC0E6; --sky-soft:#1E3442;
+    --shadow:0 6px 20px rgba(0,0,0,.35);
+  }
+}
+:root[data-theme="dark"]{
+  --bg:#101B15; --surface:#182620; --surface2:#213229; --ink:#EAF2EC; --muted:#9DB0A4; --line:#2C3F35;
+  --pine:#4FA98F; --pine-ink:#08130E; --pine-soft:#1E3A30;
+  --mango:#FFC53D; --mango-ink:#2A1E00; --mango-soft:#3D3010;
+  --coral:#FF7A76; --coral-soft:#3F2322;
+  --sky:#7CC0E6; --sky-soft:#1E3442;
+  --shadow:0 6px 20px rgba(0,0,0,.35);
+}
+*{box-sizing:border-box}
+html,body{margin:0;background:var(--bg);color:var(--ink);font-family:"Nunito Sans",system-ui,-apple-system,sans-serif;font-size:16px;line-height:1.4;-webkit-tap-highlight-color:transparent}
+h1,h2,h3,.display{font-family:"Fredoka","Nunito Sans",system-ui,sans-serif;font-weight:600;letter-spacing:.01em;margin:0;text-wrap:balance}
+button{font:inherit;color:inherit;border:0;background:none;cursor:pointer;padding:0}
+input,select{font:inherit;color:inherit}
+button:focus-visible,input:focus-visible,select:focus-visible{outline:3px solid var(--mango);outline-offset:2px}
+.app{max-width:520px;margin:0 auto;min-height:100dvh;display:flex;flex-direction:column}
+header.top{position:sticky;top:0;z-index:5;background:var(--pine);color:var(--pine-ink);padding:calc(10px + env(safe-area-inset-top)) 16px 10px;display:flex;align-items:center;gap:12px}
+header.top .brand{font-family:"Fredoka";font-size:22px;font-weight:700;flex:1}
+header.top .brand small{display:block;font-family:"Nunito Sans";font-size:12px;font-weight:600;opacity:.85}
+.me-chip{display:flex;}
+.me-chip:empty{display:none}
+.me-chip{align-items:center;gap:8px;background:rgba(255,255,255,.16);border-radius:999px;padding:6px 12px 6px 6px;color:inherit}
+.me-chip .av{width:32px;height:32px;font-size:20px}
+.me-chip b{font-family:"Fredoka";font-size:17px}
+.av{display:inline-flex;align-items:center;justify-content:center;border-radius:50%;background:var(--surface2);width:40px;height:40px;font-size:24px;flex:none}
+main{flex:1;padding:16px 16px calc(84px + env(safe-area-inset-bottom))}
+.tabs{position:fixed;bottom:0;left:0;right:0;z-index:5;background:var(--surface);border-top:1px solid var(--line);padding:6px 0 calc(6px + env(safe-area-inset-bottom))}
+.tabs .in{max-width:520px;margin:0 auto;display:grid;grid-template-columns:repeat(4,1fr)}
+.tabs button{display:flex;flex-direction:column;align-items:center;gap:2px;padding:6px 0;color:var(--muted);font-size:11.5px;font-weight:700;position:relative}
+.tabs button .ic{font-size:22px;line-height:1}
+.tabs button.on{color:var(--pine)}
+.tabs button .dot{position:absolute;top:4px;right:calc(50% - 20px);width:9px;height:9px;border-radius:50%;background:var(--coral)}
+.card{background:var(--surface);border-radius:var(--r);padding:16px;box-shadow:var(--shadow)}
+.stack{display:flex;flex-direction:column;gap:14px}
+.row{display:flex;align-items:center;gap:10px}
+.grow{flex:1;min-width:0}
+.muted{color:var(--muted)}
+.small{font-size:13px}
+.eyebrow{font-size:11.5px;font-weight:800;letter-spacing:.08em;text-transform:uppercase;color:var(--muted)}
+h2{font-size:22px}
+h3{font-size:17px}
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:6px;border-radius:999px;padding:10px 18px;font-weight:800;background:var(--pine);color:var(--pine-ink);font-family:"Fredoka";font-size:16px;transition:transform .08s}
+.btn:active{transform:scale(.96)}
+.btn.ghost{background:var(--surface2);color:var(--ink)}
+.btn.mango{background:var(--mango);color:var(--mango-ink)}
+.btn.coral{background:var(--coral);color:#fff}
+.btn.sm{padding:7px 12px;font-size:14px}
+.btn:disabled{opacity:.5;cursor:default}
+.chip{display:inline-flex;align-items:center;gap:6px;border-radius:999px;padding:6px 12px;background:var(--surface2);font-weight:700;font-size:14px;border:2px solid transparent}
+.chip.on{border-color:var(--pine);background:var(--pine-soft)}
+.chips{display:flex;flex-wrap:wrap;gap:8px}
+/* misiones */
+.missions{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.mission{position:relative;text-align:left;background:var(--surface);border-radius:var(--r);padding:16px 14px 14px;box-shadow:var(--shadow);border:3px solid transparent;transition:transform .1s,background .2s;min-height:128px;display:flex;flex-direction:column;gap:6px}
+.mission:active{transform:scale(.97)}
+.mission .em{font-size:38px;line-height:1}
+.mission .nm{font-family:"Fredoka";font-weight:600;font-size:18px}
+.mission .ds{font-size:12.5px;color:var(--muted);line-height:1.3}
+.mission .pt{position:absolute;top:10px;right:12px;font-size:12px;font-weight:800;color:var(--muted)}
+.mission.done{background:var(--pine-soft);border-color:var(--pine)}
+.mission.done .pt{color:var(--pine)}
+.mission.done .pt::before{content:"✓ "}
+.ring{width:64px;height:64px;position:relative;flex:none}
+.ring svg{transform:rotate(-90deg)}
+.ring .c{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;font-family:"Fredoka";font-weight:700;font-size:18px}
+.banner{border-radius:16px;padding:12px 14px;display:flex;gap:10px;align-items:center}
+.banner.mango{background:var(--mango-soft)}
+.banner.coral{background:var(--coral-soft)}
+.banner.sky{background:var(--sky-soft)}
+.banner.pine{background:var(--pine-soft)}
+.avs{display:inline-flex}
+.avs .av{width:28px;height:28px;font-size:17px;margin-left:-8px;border:2px solid var(--surface)}
+.avs .av:first-child{margin-left:0}
+/* progreso familia */
+.bar{height:22px;border-radius:999px;background:var(--surface2);overflow:hidden;display:flex}
+.bar span{height:100%;display:block;transition:width .4s}
+.big{font-family:"Fredoka";font-weight:700;font-size:34px;line-height:1;font-variant-numeric:tabular-nums}
+.member{display:flex;align-items:center;gap:10px;padding:10px 0;border-top:1px solid var(--line)}
+.member:first-of-type{border-top:0}
+.member .rank{font-family:"Fredoka";font-weight:700;width:22px;text-align:center;color:var(--muted)}
+.member .nm{font-weight:800}
+.member .pts{font-family:"Fredoka";font-weight:700;font-size:20px;font-variant-numeric:tabular-nums}
+.dots{display:flex;gap:4px;margin-top:3px}
+.dots i{width:16px;height:16px;border-radius:5px;background:var(--surface2);display:inline-flex;align-items:center;justify-content:center;font-size:10px;font-style:normal;opacity:.45}
+.dots i.on{background:var(--pine-soft);opacity:1}
+.nudge{width:38px;height:38px;border-radius:50%;background:var(--surface2);font-size:20px;display:inline-flex;align-items:center;justify-content:center}
+.nudge:active{transform:scale(.9)}
+/* feed */
+.post{display:flex;gap:10px;padding:12px 0;border-top:1px solid var(--line)}
+.post:first-child{border-top:0}
+.post .tx{font-size:15px}
+.post .tm{font-size:12px;color:var(--muted);margin-top:2px}
+.reacts{display:flex;gap:6px;margin-top:8px;flex-wrap:wrap}
+.reacts button{border-radius:999px;background:var(--surface2);padding:4px 9px;font-size:13px;font-weight:700;border:2px solid transparent}
+.reacts button.on{border-color:var(--pine);background:var(--pine-soft)}
+/* retos */
+.reto{padding:12px 0;border-top:1px solid var(--line)}
+.reto:first-child{border-top:0}
+.reto .tt{font-family:"Fredoka";font-weight:600;font-size:17px}
+input[type=text],input[type=number]{width:100%;border:2px solid var(--line);border-radius:14px;padding:10px 12px;background:var(--surface);}
+label.f{display:block;font-size:13px;font-weight:800;color:var(--muted);margin:10px 0 6px}
+/* modal */
+.modal{position:fixed;inset:0;z-index:20;background:rgba(10,20,14,.55);display:flex;align-items:flex-end;justify-content:center;padding:0}
+.modal .box{background:var(--surface);border-radius:24px 24px 0 0;padding:20px 18px calc(20px + env(safe-area-inset-bottom));width:100%;max-width:520px;max-height:92dvh;overflow:auto}
+@media(min-width:600px){.modal{align-items:center;padding:20px}.modal .box{border-radius:24px}}
+.emojis{display:grid;grid-template-columns:repeat(8,1fr);gap:6px}
+.emojis button{font-size:26px;aspect-ratio:1;border-radius:12px;background:var(--surface2);border:3px solid transparent}
+.emojis button.on{border-color:var(--pine)}
+.who{display:flex;align-items:center;gap:12px;width:100%;text-align:left;padding:10px 12px;border-radius:16px;background:var(--surface2);font-weight:800;font-size:17px}
+.toast{position:fixed;left:50%;transform:translateX(-50%);bottom:calc(90px + env(safe-area-inset-bottom));background:var(--ink);color:var(--bg);padding:10px 16px;border-radius:999px;font-weight:700;z-index:30;box-shadow:var(--shadow);max-width:90vw;text-align:center}
+canvas.confetti{position:fixed;inset:0;pointer-events:none;z-index:40}
+.badges{display:flex;gap:4px;flex-wrap:wrap}
+.badge{font-size:12px;background:var(--mango-soft);color:var(--mango-ink);border-radius:999px;padding:2px 8px;font-weight:800}
+.lang{font-size:12px;font-weight:800;opacity:.85;padding:4px 8px;border-radius:8px;background:rgba(255,255,255,.16)}
+.empty{text-align:center;padding:24px 10px;color:var(--muted)}
+.empty .em{font-size:40px}
+@media (prefers-reduced-motion: reduce){*{transition:none!important;animation:none!important}}
+</style>
+</head>
+<body>
+<div class="app">
+  <header class="top">
+    <div class="brand">🐺 La Manada<small id="sub"></small></div>
+    <button class="lang" id="langBtn"></button>
+    <button class="me-chip" id="meChip"></button>
+  </header>
+  <main id="main"></main>
+  <nav class="tabs"><div class="in" id="tabs"></div></nav>
+</div>
+<div id="modal"></div>
+<div id="toasts"></div>
+<canvas class="confetti" id="confetti"></canvas>
+
+<script>
+// ============ i18n ============
+const T = {
+es:{
+ tabs:{today:'Hoy',pack:'Manada',dares:'Retos',wall:'Muro'},
+ missions:{move:['Muévete','20 min de ejercicio o caminata'],veg:['Verde en el plato','Fruta o verdura en 2 comidas'],water:['Agua','6+ vasos, cero gaseosa'],sugar:['Sin chatarra','Cero paquetes ni dulces extra']},
+ hi:h=>h<12?'Buenos días':h<19?'Buenas tardes':'Buenas noches', todayIs:'Tus misiones de hoy', done4:'¡Día perfecto! Las 4 misiones 💯',
+ dayPts:'puntos hoy', weekPts:'esta semana', streak:'días seguidos', streakHint:'racha: 2+ misiones al día',
+ packMoved:(names,n)=>n===0?'Nadie se ha movido hoy todavía. ¡Sé el primero! 🐺':n===1?`${names} ya se movió. Si te mueves tú, los dos ganan +10 🐺`:`Hoy se movieron ${names}. ¡Entreno en manada! +10 para cada uno 🐺`,
+ youNudged:(who,m)=>`${who} te dio un empujón: ${m}`, go:'¡Voy!', pendingDares:'Retos pendientes para ti', doneBtn:'¡Hecho!', undo:'Deshacer',
+ goalTitle:'Meta de la semana', goalOf:(a,b)=>`${a} de ${b} pts`, reward:'Premio', noGoal:'Sin meta todavía. ¡Pongan una!', setGoal:'Poner meta', editGoal:'Cambiar', goalHit:'¡META LOGRADA! 🎉 Se ganaron:', goalLeft:n=>`Faltan ${n} pts. ¡Todos suman!`,
+ ranking:'Ranking de la semana', nudgeWho:n=>`Empujón para ${n}`, nudgeWhich:'¿En qué misión?', nudgeAll:'Lo que sea 💨', nudgeSent:'Empujón enviado 👉',
+ newDare:'Lanzar un reto', to:'Para', all:'Toda la manada', dareText:'El reto', dareCustom:'Otro (escríbelo)', pts:'Puntos', launch:'Lanzar reto 🚀', openDares:'Retos abiertos', noDares:'Sin retos abiertos. ¡Lanza uno!',
+ presets:['20 sentadillas','1 min de plancha','Caminar 30 min','Bailar una canción completa','Subir escaleras 5 veces','Cocinar algo con verduras','Un día sin gaseosa','Ir en bici o caminando a un mandado','Estiramientos 10 min'],
+ by:'por', dareFor:(a,b)=>`${a} → ${b}`, doneBy:'Cumplido por', motivate:'+5 al que reta por motivar',
+ wall:'Muro de la manada', noWall:'Todavía no pasa nada. ¡Completa una misión!',
+ feed:{join:n=>`${n} se unió a la manada 🐺`, log:(n,m)=>`${n} completó ${m}`, fullday:n=>`${n} hizo las 4 misiones del día 💯`, pack:names=>`¡Entreno en manada! ${names} se movieron hoy. +10 para cada uno 🐺`, challenge:(n,to,t,p)=>`${n} retó a ${to}: «${t}» (+${p})`, challenge_done:(n,t,p)=>`${n} cumplió el reto «${t}» +${p} 💪`, nudge:(n,to,m)=>`${n} le dio un empujón a ${to}: ${m}`, goal:(n,p,r)=>`${n} puso la meta de la semana: ${p} pts → ${r} 🎁`},
+ who:'¿Quién eres?', pick:'Toca tu nombre', newMember:'Soy nuevo en la manada', yourName:'Tu nombre', yourEmoji:'Tu animal', join:'Entrar a la manada', changeMe:'Cambiar de persona', editMe:'Editar mi perfil', saveBtn:'Guardar', cancel:'Cancelar',
+ pinTitle:'Clave de la familia', pinHint:'Pídesela a quien instaló la app', enter:'Entrar', wrongPin:'Clave incorrecta',
+ goalTarget:'Meta en puntos', goalReward:'Premio si la logran (ej. noche de pizza)', offline:'Sin conexión, reintentando…', ago:{now:'ahora',m:n=>`hace ${n} min`,h:n=>`hace ${n} h`,d:n=>`hace ${n} d`},
+ anyMission:'lo que sea', badges:{streak7:'🔥 7 días',streak30:'🔥 30 días',full5:'💯 ×5',pack:'🐺 manada'}, today:'hoy', yesterday:'ayer', ptsShort:'pts', myTodayFull:'Completaste todo hoy. ¡Descansa como campeón!', nudgeTip:'Toca 👉 para dar un empujón a quien le falte algo', install:'Tip: en el celular, “Agregar a pantalla de inicio” para tenerla como app.'
+},
+en:{
+ tabs:{today:'Today',pack:'Pack',dares:'Dares',wall:'Wall'},
+ missions:{move:['Move','20 min of exercise or walking'],veg:['Greens on the plate','Fruit or veg in 2 meals'],water:['Water','6+ glasses, no soda'],sugar:['No junk','No chips or extra sweets']},
+ hi:h=>h<12?'Good morning':h<19?'Good afternoon':'Good evening', todayIs:'Your missions today', done4:'Perfect day! All 4 missions 💯',
+ dayPts:'points today', weekPts:'this week', streak:'day streak', streakHint:'streak: 2+ missions a day',
+ packMoved:(names,n)=>n===0?'Nobody has moved yet today. Be the first! 🐺':n===1?`${names} already moved. Move too and you both get +10 🐺`:`${names} moved today. Pack workout! +10 each 🐺`,
+ youNudged:(who,m)=>`${who} nudged you: ${m}`, go:"On it!", pendingDares:'Dares waiting for you', doneBtn:'Done!', undo:'Undo',
+ goalTitle:'Goal of the week', goalOf:(a,b)=>`${a} of ${b} pts`, reward:'Reward', noGoal:'No goal yet. Set one!', setGoal:'Set goal', editGoal:'Change', goalHit:'GOAL REACHED! 🎉 You earned:', goalLeft:n=>`${n} pts to go. Everyone counts!`,
+ ranking:'This week’s ranking', nudgeWho:n=>`Nudge ${n}`, nudgeWhich:'Which mission?', nudgeAll:'Anything 💨', nudgeSent:'Nudge sent 👉',
+ newDare:'Launch a dare', to:'For', all:'Whole pack', dareText:'The dare', dareCustom:'Other (type it)', pts:'Points', launch:'Launch dare 🚀', openDares:'Open dares', noDares:'No open dares. Launch one!',
+ presets:['20 squats','1 min plank','Walk 30 min','Dance a full song','Climb the stairs 5 times','Cook something with veggies','A day without soda','Bike or walk to an errand','Stretch 10 min'],
+ by:'by', dareFor:(a,b)=>`${a} → ${b}`, doneBy:'Done by', motivate:'+5 to the challenger for motivating',
+ wall:'Pack wall', noWall:'Nothing yet. Complete a mission!',
+ feed:{join:n=>`${n} joined the pack 🐺`, log:(n,m)=>`${n} completed ${m}`, fullday:n=>`${n} did all 4 missions today 💯`, pack:names=>`Pack workout! ${names} moved today. +10 each 🐺`, challenge:(n,to,t,p)=>`${n} dared ${to}: “${t}” (+${p})`, challenge_done:(n,t,p)=>`${n} completed the dare “${t}” +${p} 💪`, nudge:(n,to,m)=>`${n} nudged ${to}: ${m}`, goal:(n,p,r)=>`${n} set this week’s goal: ${p} pts → ${r} 🎁`},
+ who:'Who are you?', pick:'Tap your name', newMember:"I'm new to the pack", yourName:'Your name', yourEmoji:'Your animal', join:'Join the pack', changeMe:'Switch person', editMe:'Edit my profile', saveBtn:'Save', cancel:'Cancel',
+ pinTitle:'Family code', pinHint:'Ask whoever set up the app', enter:'Enter', wrongPin:'Wrong code',
+ goalTarget:'Goal in points', goalReward:'Reward if you make it (e.g. pizza night)', offline:'Offline, retrying…', ago:{now:'now',m:n=>`${n} min ago`,h:n=>`${n} h ago`,d:n=>`${n} d ago`},
+ anyMission:'anything', badges:{streak7:'🔥 7 days',streak30:'🔥 30 days',full5:'💯 ×5',pack:'🐺 pack'}, today:'today', yesterday:'yesterday', ptsShort:'pts', myTodayFull:'You did everything today. Rest like a champ!', nudgeTip:'Tap 👉 to nudge whoever is missing something', install:'Tip: on your phone, use “Add to Home Screen” to keep it as an app.'
+}};
+const MIS = {move:'🏃',veg:'🥦',water:'💧',sugar:'🚫🍟'};
+const MISSIONS = ['move','veg','water','sugar'];
+const EMOJIS = ['🐺','🦊','🐻','🐼','🦁','🐯','🐨','🐸','🐵','🦄','🐙','🦖','🐢','🦋','🐝','🐬','🦉','🐧','🦒','🐘','🦓','🐰','🐱','🐶'];
+const REACTS = ['👏','💪','❤️','😂'];
+
+let lang = localStorage.getItem('lm_lang') || 'es';
+const t = () => T[lang];
+
+// ============ estado ============
+let S = null;            // estado del servidor
+let myId = localStorage.getItem('lm_me') || '';
+let tab = localStorage.getItem('lm_tab') || 'today';
+let pin = localStorage.getItem('lm_pin') || '';
+let offline = false;
+const seenNudges = new Set(JSON.parse(localStorage.getItem('lm_seen') || '[]'));
+
+const $ = s => document.querySelector(s);
+const esc = s => String(s).replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+const pad = n => String(n).padStart(2,'0');
+const dstr = d => `${d.getFullYear()}-${pad(d.getMonth()+1)}-${pad(d.getDate())}`;
+const today = () => dstr(new Date());
+function mondayOf(d){ const x = new Date(d); x.setHours(0,0,0,0); x.setDate(x.getDate() - ((x.getDay()+6)%7)); return x; }
+const weekKey = (d=new Date()) => 'W' + dstr(mondayOf(d));
+function addDays(d,n){ const x=new Date(d); x.setDate(x.getDate()+n); return x; }
+
+// Dónde está la API: mismo origen si corre el servidor local; si no, la Edge Function de Supabase.
+const LOCAL = ['localhost','127.0.0.1'].includes(location.hostname) || /^192\.168\./.test(location.hostname);
+const API_BASE = LOCAL ? '' : 'https://sxfbzcnsbcvitaenwpct.supabase.co/functions/v1/la-manada/';
+async function api(path, body){
+  try{
+    const r = await fetch(API_BASE + path.replace(/^\//,''), { method: body?'POST':'GET', headers:{'Content-Type':'application/json','x-pin':pin}, body: body?JSON.stringify(body):undefined });
+    const j = await r.json().catch(()=>({}));
+    if (r.status===401){ askPin(); throw new Error(t().wrongPin); }
+    if (!r.ok) throw new Error(j.error || 'Error');
+    if (offline){ offline=false; renderHeader(); }
+    return j;
+  }catch(e){
+    if (e instanceof TypeError){ offline=true; renderHeader(); throw new Error(t().offline); }
+    throw e;
+  }
+}
+async function load(){ const j = await api('/api/state'); S = j.state; render(); }
+async function act(path, body, okMsg){
+  try{ const r = await api(path, body); if (okMsg) toast(okMsg); await load(); return r; }
+  catch(e){ toast('⚠️ ' + e.message); }
+}
+// En vivo: SSE si el servidor lo tiene (local); si no, sondeo cada 8 s.
+let sseOk = false;
+function connect(){
+  if (!LOCAL) return; // online no hay SSE: se usa el sondeo de abajo
+  let es;
+  try{ es = new EventSource('api/events'); }catch(e){ return; }
+  es.onopen = () => { sseOk = true; };
+  es.onmessage = () => load();
+  es.onerror = () => { es.close(); sseOk = false; setTimeout(connect, 60000); };
+}
+setInterval(()=>{ if (!sseOk && document.visibilityState==='visible' && !document.querySelector('#modal .box')) load().catch(()=>{}); }, 8000);
+document.addEventListener('visibilitychange', ()=>{ if (document.visibilityState==='visible') load().catch(()=>{}); });
+
+// ============ cálculo de puntos ============
+function compute(){
+  const members = Object.values(S.members).sort((a,b)=>a.createdAt-b.createdAt);
+  const td = today();
+  const mon = mondayOf(new Date()); const nextMon = addDays(mon,7);
+  const weekDays = []; for (let i=0;i<7;i++) weekDays.push(dstr(addDays(mon,i)));
+  const R = {}; members.forEach(m => R[m.id] = { week:0, today:0, streak:0, full:0, packDays:0, todayDone:{}, m });
+
+  function dayPts(date, mid){
+    const day = S.logs[date] || {}; const mine = day[mid] || {};
+    const n = MISSIONS.filter(k=>mine[k]).length;
+    let p = n*10 + (n===4?10:0);
+    const movers = Object.keys(day).filter(k=>day[k].move && S.members[k]).length;
+    const pack = !!mine.move && movers>=2;
+    if (pack) p += 10;
+    return {p,n,pack};
+  }
+  members.forEach(m=>{
+    weekDays.forEach(d=>{ const x = dayPts(d,m.id); R[m.id].week += x.p; });
+    const tdx = dayPts(td, m.id); R[m.id].today = tdx.p; R[m.id].todayDone = (S.logs[td]||{})[m.id] || {};
+    // racha, días completos, días en manada (histórico)
+    Object.keys(S.logs).forEach(d=>{ const x = dayPts(d,m.id); if (x.n===4) R[m.id].full++; if (x.pack) R[m.id].packDays++; });
+    let d = new Date(); if (dayPts(td,m.id).n < 2) d = addDays(d,-1);
+    let s=0; for (let i=0;i<400;i++){ if (dayPts(dstr(d),m.id).n>=2){ s++; d=addDays(d,-1);} else break; }
+    R[m.id].streak = s;
+  });
+  S.challenges.forEach(c=>{
+    Object.entries(c.done).forEach(([mid,ts])=>{
+      if (ts>=mon.getTime() && ts<nextMon.getTime()){
+        if (R[mid]) R[mid].week += c.pts;
+        if (c.from!==mid && R[c.from]) R[c.from].week += 5;
+        if (dstr(new Date(ts))===td){ if (R[mid]) R[mid].today += c.pts; if (c.from!==mid && R[c.from]) R[c.from].today += 5; }
+      }
+    });
+  });
+  const familyWeek = members.reduce((a,m)=>a+R[m.id].week,0);
+  const goal = S.goal[weekKey()] || null;
+  const moversToday = members.filter(m=>R[m.id].todayDone.move);
+  return { members, R, familyWeek, goal, moversToday, td };
+}
+const name = id => id==='all' ? t().all : (S.members[id]?.name || '?');
+const emo = id => S.members[id]?.emoji || '🙂';
+const mlabel = k => k && k!=='any' ? `${MIS[k]} ${t().missions[k][0]}` : t().anyMission;
+function ago(ts){ const s=(Date.now()-ts)/1000; const a=t().ago; if (s<60) return a.now; if (s<3600) return a.m(Math.floor(s/60)); if (s<86400) return a.h(Math.floor(s/3600)); return a.d(Math.floor(s/86400)); }
+function badges(r){ const b=[]; const B=t().badges; if (r.streak>=30) b.push(B.streak30); else if (r.streak>=7) b.push(B.streak7); if (r.full>=5) b.push(B.full5); if (r.packDays>=3) b.push(B.pack); return b; }
+
+// ============ render ============
+function render(){
+  if (!S) return;
+  const me = S.members[myId];
+  if (!me){ myId=''; showWho(); }
+  renderHeader();
+  renderTabs();
+  const C = compute();
+  const main = $('#main');
+  if (!me){ main.innerHTML = ''; return; }
+  ({today: renderToday, pack: renderPack, dares: renderDares, wall: renderWall})[tab](main, C, me);
+  const box = $('#modal .box'); if (box) {/* modal abierto: no tocar */}
+}
+function renderHeader(){
+  $('#langBtn').textContent = lang==='es' ? 'EN' : 'ES';
+  $('#sub').textContent = offline ? t().offline : '';
+  const me = S && S.members[myId];
+  if (!me){ $('#meChip').innerHTML=''; return; }
+  const C = compute(); const r = C.R[me.id];
+  $('#meChip').innerHTML = `<span class="av">${me.emoji}</span><b>${r.week} <span style="font-family:'Nunito Sans';font-size:12px;font-weight:700">${t().ptsShort}</span></b>${r.streak?` <span>🔥${r.streak}</span>`:''}`;
+}
+function renderTabs(){
+  const tb = t().tabs; const ic = {today:'☀️',pack:'🐺',dares:'⚡',wall:'💬'};
+  const me = S && S.members[myId];
+  const pendingDares = me ? S.challenges.filter(c=>(c.to==='all'||c.to===me.id)&&c.from!==me.id&&!c.done[me.id]&&Date.now()-c.ts<7*86400e3).length : 0;
+  $('#tabs').innerHTML = Object.keys(tb).map(k=>`<button class="${tab===k?'on':''}" data-tab="${k}"><span class="ic">${ic[k]}</span>${tb[k]}${k==='dares'&&pendingDares?'<span class="dot"></span>':''}</button>`).join('');
+}
+function ring(n, total){
+  const r=26, c=2*Math.PI*r, off=c*(1-n/total);
+  return `<div class="ring"><svg width="64" height="64" viewBox="0 0 64 64"><circle cx="32" cy="32" r="${r}" fill="none" stroke="var(--surface2)" stroke-width="7"/><circle cx="32" cy="32" r="${r}" fill="none" stroke="var(--pine)" stroke-width="7" stroke-linecap="round" stroke-dasharray="${c}" stroke-dashoffset="${off}"/></svg><div class="c">${n}/${total}</div></div>`;
+}
+
+function renderToday(main, C, me){
+  const r = C.R[me.id]; const done = r.todayDone; const n = MISSIONS.filter(k=>done[k]).length;
+  const h = new Date().getHours();
+  const nudges = S.nudges.filter(x=>x.to===me.id && !x.seen && Date.now()-x.ts<86400e3);
+  const dares = S.challenges.filter(c=>(c.to==='all'||c.to===me.id)&&c.from!==me.id&&!c.done[me.id]&&Date.now()-c.ts<7*86400e3);
+  const movers = C.moversToday.filter(m=>m.id!==me.id);
+  const moverNames = movers.map(m=>`${m.emoji} ${m.name}`).join(', ');
+  const mv = done.move ? C.moversToday : movers;
+  let html = `<div class="stack">
+    <div class="row">
+      <div class="grow"><div class="eyebrow">${t().hi(h)}, ${esc(me.name)}</div><h2>${n===4?t().done4:t().todayIs}</h2>
+        <div class="small muted">${r.today} ${t().dayPts} · ${r.week} ${t().weekPts}${r.streak?` · 🔥 ${r.streak} ${t().streak}`:''}</div></div>
+      ${ring(n,4)}
+    </div>`;
+  nudges.forEach(x=> html += `<div class="banner coral"><span class="av" style="background:transparent">${emo(x.from)}</span><div class="grow"><b>${esc(t().youNudged(name(x.from), mlabel(x.mission)))}</b></div><button class="btn sm coral" data-seen="1">${t().go}</button></div>`);
+  html += `<div class="missions">${MISSIONS.map(k=>`<button class="mission ${done[k]?'done':''}" data-mission="${k}"><span class="pt">10 ${t().ptsShort}</span><span class="em">${MIS[k]}</span><span class="nm">${t().missions[k][0]}</span><span class="ds">${t().missions[k][1]}</span></button>`).join('')}</div>`;
+  const packCls = C.moversToday.length>=2 && done.move ? 'pine' : 'mango';
+  html += `<div class="banner ${packCls}"><div class="avs">${(done.move?C.moversToday:movers).map(m=>`<span class="av">${m.emoji}</span>`).join('')||'<span class="av">🐺</span>'}</div><div class="grow small"><b>${esc(done.move && C.moversToday.length>=2 ? t().packMoved(C.moversToday.map(m=>`${m.emoji} ${m.name}`).join(', '),2) : t().packMoved(moverNames, movers.length))}</b></div></div>`;
+  if (dares.length){
+    html += `<div class="card"><div class="eyebrow">${t().pendingDares}</div>` + dares.map(c=>`<div class="reto row"><span class="av">${emo(c.from)}</span><div class="grow"><div class="tt">${esc(c.text)}</div><div class="small muted">${t().by} ${esc(name(c.from))} · +${c.pts} ${t().ptsShort}</div></div><button class="btn sm mango" data-dare="${c.id}">${t().doneBtn}</button></div>`).join('') + `</div>`;
+  }
+  if (n===4) html += `<div class="banner pine"><span style="font-size:28px">🏆</span><div class="grow small"><b>${t().myTodayFull}</b></div></div>`;
+  html += `<div class="small muted" style="text-align:center">${t().install}</div></div>`;
+  main.innerHTML = html;
+}
+
+function renderPack(main, C, me){
+  const g = C.goal; const total = C.familyWeek;
+  const ranked = [...C.members].sort((a,b)=>C.R[b.id].week-C.R[a.id].week || C.R[b.id].streak-C.R[a.id].streak);
+  let html = `<div class="stack"><div class="card">
+    <div class="row"><div class="grow"><div class="eyebrow">${t().goalTitle}</div>`;
+  if (g){
+    const pct = Math.min(100, total/g.target*100);
+    html += `<div class="big">${total} <span class="muted" style="font-size:18px">/ ${g.target}</span></div></div>
+      <button class="btn sm ghost" data-goal="1">${t().editGoal}</button></div>
+      <div class="bar" style="margin:12px 0 8px">${C.members.map(m=>`<span style="width:${(C.R[m.id].week/g.target*100)}%;background:${m.color}" title="${esc(m.name)}"></span>`).join('')}</div>
+      <div class="small">${pct>=100?`<b>${t().goalHit}</b> 🎁 ${esc(g.reward||'—')}`:`🎁 <b>${t().reward}:</b> ${esc(g.reward||'—')} · ${t().goalLeft(g.target-total)}`}</div>`;
+  } else {
+    html += `<div class="big">${total} ${t().ptsShort}</div><div class="small muted">${t().noGoal}</div></div><button class="btn sm mango" data-goal="1">${t().setGoal}</button></div>`;
+  }
+  html += `</div><div class="card"><div class="eyebrow" style="margin-bottom:4px">${t().ranking}</div>`;
+  ranked.forEach((m,i)=>{
+    const r = C.R[m.id]; const d = r.todayDone; const missing = MISSIONS.filter(k=>!d[k]);
+    html += `<div class="member"><span class="rank">${i===0&&r.week>0?'👑':i+1}</span><span class="av" style="background:${m.color}33">${m.emoji}</span>
+      <div class="grow"><div class="nm">${esc(m.name)}${m.id===me.id?' <span class="muted small">(tú)</span>':''} ${r.streak?`<span class="small">🔥${r.streak}</span>`:''}</div>
+      <div class="dots">${MISSIONS.map(k=>`<i class="${d[k]?'on':''}" title="${t().missions[k][0]}">${MIS[k].slice(0,2)}</i>`).join('')}</div>
+      ${badges(r).length?`<div class="badges" style="margin-top:4px">${badges(r).map(b=>`<span class="badge">${b}</span>`).join('')}</div>`:''}</div>
+      <div class="pts">${r.week}</div>
+      ${m.id!==me.id && missing.length ? `<button class="nudge" data-nudge="${m.id}" title="${esc(t().nudgeWho(m.name))}">👉</button>` : '<span style="width:38px"></span>'}</div>`;
+  });
+  html += `<div class="small muted" style="margin-top:8px">${t().nudgeTip} · ${t().streakHint}</div></div></div>`;
+  main.innerHTML = html;
+}
+
+// formulario de retos (estado local para que no se borre al refrescar)
+const dareForm = { to:'all', text:'', custom:'', pts:15 };
+function renderDares(main, C, me){
+  const open = S.challenges.filter(c=>Date.now()-c.ts<7*86400e3).slice().reverse();
+  const targets = C.members.filter(m=>m.id!==me.id);
+  let html = `<div class="stack"><div class="card"><h3>${t().newDare}</h3>
+    <label class="f">${t().to}</label><div class="chips" id="dareTo"><button class="chip ${dareForm.to==='all'?'on':''}" data-to="all">🐺 ${t().all}</button>${targets.map(m=>`<button class="chip ${dareForm.to===m.id?'on':''}" data-to="${m.id}">${m.emoji} ${esc(m.name)}</button>`).join('')}</div>
+    <label class="f">${t().dareText}</label><div class="chips">${t().presets.map(p=>`<button class="chip ${dareForm.text===p?'on':''}" data-text="${esc(p)}">${esc(p)}</button>`).join('')}</div>
+    <input type="text" id="dareCustom" placeholder="${t().dareCustom}" value="${esc(dareForm.custom)}" maxlength="80" style="margin-top:8px">
+    <label class="f">${t().pts}</label><div class="chips">${[10,15,25,40].map(p=>`<button class="chip ${dareForm.pts===p?'on':''}" data-pts="${p}">+${p}</button>`).join('')}</div>
+    <div class="small muted" style="margin-top:8px">${t().motivate}</div>
+    <button class="btn mango" id="dareGo" style="margin-top:12px;width:100%">${t().launch}</button></div>
+    <div class="card"><div class="eyebrow">${t().openDares}</div>`;
+  if (!open.length) html += `<div class="empty"><div class="em">⚡</div>${t().noDares}</div>`;
+  open.forEach(c=>{
+    const canDo = (c.to==='all'||c.to===me.id);
+    const mine = !!c.done[me.id];
+    const doers = Object.keys(c.done).filter(k=>S.members[k]);
+    html += `<div class="reto"><div class="row"><span class="av">${emo(c.from)}</span><div class="grow"><div class="tt">${esc(c.text)} <span class="muted small">+${c.pts}</span></div>
+      <div class="small muted">${esc(t().dareFor(name(c.from), name(c.to)))} · ${ago(c.ts)}</div>
+      ${doers.length?`<div class="small" style="margin-top:4px">${t().doneBy} ${doers.map(k=>`${emo(k)} ${esc(name(k))}`).join(', ')} ✅</div>`:''}</div>
+      ${canDo?`<button class="btn sm ${mine?'ghost':'mango'}" data-dare="${c.id}">${mine?t().undo:t().doneBtn}</button>`:''}</div></div>`;
+  });
+  html += `</div></div>`;
+  main.innerHTML = html;
+}
+
+function renderWall(main, C, me){
+  const feed = S.feed.slice().reverse().slice(0,120);
+  let html = `<div class="card"><div class="eyebrow" style="margin-bottom:4px">${t().wall}</div>`;
+  if (!feed.length) html += `<div class="empty"><div class="em">🐺</div>${t().noWall}</div>`;
+  feed.forEach(f=>{
+    const F = t().feed; let tx='';
+    switch(f.type){
+      case 'join': tx=F.join(name(f.memberId)); break;
+      case 'log': tx=F.log(name(f.memberId), mlabel(f.mission)); break;
+      case 'fullday': tx=F.fullday(name(f.memberId)); break;
+      case 'pack': tx=F.pack((f.with||[]).map(k=>`${emo(k)} ${name(k)}`).join(' + ')); break;
+      case 'challenge': tx=F.challenge(name(f.memberId), name(f.to), f.text, S.challenges.find(c=>c.id===f.challengeId)?.pts ?? ''); break;
+      case 'challenge_done': tx=F.challenge_done(name(f.memberId), f.text, f.pts); break;
+      case 'nudge': tx=F.nudge(name(f.memberId), name(f.to), mlabel(f.mission)); break;
+      case 'goal': tx=F.goal(name(f.memberId), f.pts, f.text); break;
+      default: tx=f.text||'';
+    }
+    html += `<div class="post"><span class="av">${emo(f.memberId)}</span><div class="grow"><div class="tx">${esc(tx)}</div><div class="tm">${ago(f.ts)}</div>
+      <div class="reacts">${REACTS.map(e=>{ const who=(f.reactions||{})[e]||[]; return `<button class="${who.includes(me.id)?'on':''}" data-react="${e}" data-feed="${f.id}">${e}${who.length?' '+who.length:''}</button>`; }).join('')}</div></div></div>`;
+  });
+  html += `</div>`;
+  main.innerHTML = html;
+}
+
+// ============ modales ============
+function modal(html){ $('#modal').innerHTML = `<div class="modal"><div class="box">${html}</div></div>`; }
+function closeModal(){ $('#modal').innerHTML=''; }
+function showWho(){
+  const members = Object.values(S.members).sort((a,b)=>a.createdAt-b.createdAt);
+  modal(`<h2>${t().who}</h2><div class="small muted" style="margin:4px 0 12px">${t().pick}</div>
+    <div class="stack" style="gap:8px">${members.map(m=>`<button class="who" data-who="${m.id}"><span class="av" style="background:${m.color}33">${m.emoji}</span>${esc(m.name)}</button>`).join('')}
+    <button class="who" data-new="1" style="background:var(--mango);color:var(--mango-ink)"><span class="av">✨</span>${t().newMember}</button></div>`);
+}
+let pickedEmoji = '🐺';
+function showNew(edit){
+  const me = edit ? S.members[myId] : null;
+  pickedEmoji = me ? me.emoji : EMOJIS[Object.keys(S.members).length % EMOJIS.length];
+  modal(`<h2>${edit?t().editMe:t().newMember}</h2>
+    <label class="f">${t().yourName}</label><input type="text" id="newName" maxlength="24" value="${me?esc(me.name):''}" autocomplete="off">
+    <label class="f">${t().yourEmoji}</label><div class="emojis" id="emojis">${EMOJIS.map(e=>`<button class="${e===pickedEmoji?'on':''}" data-emoji="${e}">${e}</button>`).join('')}</div>
+    <div class="row" style="margin-top:16px;justify-content:flex-end"><button class="btn ghost" data-close="1">${t().cancel}</button><button class="btn" id="newGo">${edit?t().saveBtn:t().join}</button></div>`);
+  setTimeout(()=>$('#newName')?.focus(), 50);
+}
+function showGoal(){
+  const g = S.goal[weekKey()] || {};
+  modal(`<h2>${t().goalTitle}</h2>
+    <label class="f">${t().goalTarget}</label><input type="number" id="goalT" value="${g.target||Math.max(100, Object.keys(S.members).length*120)}" min="50" max="5000" step="10">
+    <label class="f">${t().goalReward}</label><input type="text" id="goalR" value="${esc(g.reward||'')}" maxlength="60">
+    <div class="row" style="margin-top:16px;justify-content:flex-end"><button class="btn ghost" data-close="1">${t().cancel}</button><button class="btn mango" id="goalGo">${t().saveBtn}</button></div>`);
+}
+function showNudge(mid){
+  const d = (S.logs[today()]||{})[mid]||{}; const missing = MISSIONS.filter(k=>!d[k]);
+  modal(`<h2>👉 ${esc(t().nudgeWho(name(mid)))}</h2><div class="small muted" style="margin:4px 0 12px">${t().nudgeWhich}</div>
+    <div class="chips">${missing.map(k=>`<button class="chip" data-nudge-go="${k}" data-mid="${mid}">${mlabel(k)}</button>`).join('')}<button class="chip" data-nudge-go="any" data-mid="${mid}">${t().nudgeAll}</button></div>
+    <div class="row" style="margin-top:16px;justify-content:flex-end"><button class="btn ghost" data-close="1">${t().cancel}</button></div>`);
+}
+function askPin(){
+  if ($('#pinIn')) return;
+  modal(`<h2>🔑 ${t().pinTitle}</h2><div class="small muted" style="margin:4px 0 12px">${t().pinHint}</div>
+    <input type="text" id="pinIn" inputmode="numeric" autocomplete="off"><div class="row" style="margin-top:16px;justify-content:flex-end"><button class="btn" id="pinGo">${t().enter}</button></div>`);
+  setTimeout(()=>$('#pinIn')?.focus(),50);
+}
+function showMeMenu(){
+  const me = S.members[myId];
+  modal(`<div class="row" style="margin-bottom:12px"><span class="av" style="width:56px;height:56px;font-size:34px;background:${me.color}33">${me.emoji}</span><h2>${esc(me.name)}</h2></div>
+    <div class="stack" style="gap:8px"><button class="who" data-edit="1"><span class="av">✏️</span>${t().editMe}</button><button class="who" data-switch="1"><span class="av">🔄</span>${t().changeMe}</button></div>
+    <div class="row" style="margin-top:16px;justify-content:flex-end"><button class="btn ghost" data-close="1">${t().cancel}</button></div>`);
+}
+
+// ============ toast + confetti ============
+function toast(msg, ms=2200){ const d=document.createElement('div'); d.className='toast'; d.textContent=msg; $('#toasts').appendChild(d); setTimeout(()=>d.remove(), ms); }
+function confetti(big){
+  if (matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+  const cv=$('#confetti'), ctx=cv.getContext('2d'); cv.width=innerWidth; cv.height=innerHeight;
+  const cols=['#2F6F5E','#FFB703','#F25F5C','#5FA8D3','#8E6BBF'];
+  const P=[]; const N=big?160:60;
+  for (let i=0;i<N;i++) P.push({x:innerWidth/2+(Math.random()-.5)*120, y:innerHeight*0.45, vx:(Math.random()-.5)*14, vy:-Math.random()*14-4, r:4+Math.random()*5, c:cols[i%5], a:Math.random()*6, s:Math.random()*.3-.15});
+  let f=0; (function step(){ ctx.clearRect(0,0,cv.width,cv.height); P.forEach(p=>{ p.x+=p.vx; p.y+=p.vy; p.vy+=.45; p.vx*=.99; p.a+=p.s; ctx.save(); ctx.translate(p.x,p.y); ctx.rotate(p.a); ctx.fillStyle=p.c; ctx.fillRect(-p.r,-p.r/2,p.r*2,p.r); ctx.restore(); }); if (++f<(big?110:70)) requestAnimationFrame(step); else ctx.clearRect(0,0,cv.width,cv.height); })();
+}
+
+// ============ eventos ============
+document.addEventListener('click', async e=>{
+  const b = e.target.closest('button'); if (!b) return;
+  const me = S && S.members[myId];
+  if (b.dataset.tab){ tab=b.dataset.tab; localStorage.setItem('lm_tab',tab); render(); return; }
+  if (b.id==='langBtn'){ lang = lang==='es'?'en':'es'; localStorage.setItem('lm_lang',lang); render(); if ($('#modal .box')) { closeModal(); if (!me) showWho(); } return; }
+  if (b.id==='meChip'){ showMeMenu(); return; }
+  if (b.dataset.close){ closeModal(); if (!S.members[myId]) showWho(); return; }
+  if (b.dataset.who){ myId=b.dataset.who; localStorage.setItem('lm_me',myId); closeModal(); render(); return; }
+  if (b.dataset.new){ showNew(false); return; }
+  if (b.dataset.edit){ showNew(true); return; }
+  if (b.dataset.switch){ myId=''; localStorage.removeItem('lm_me'); showWho(); return; }
+  if (b.dataset.emoji){ pickedEmoji=b.dataset.emoji; document.querySelectorAll('#emojis button').forEach(x=>x.classList.toggle('on', x.dataset.emoji===pickedEmoji)); return; }
+  if (b.id==='newGo'){
+    const nm = $('#newName').value.trim(); if (!nm) { $('#newName').focus(); return; }
+    if (S.members[myId] && $('#modal h2').textContent===t().editMe){ await act('/api/members/update',{id:myId,name:nm,emoji:pickedEmoji}); closeModal(); return; }
+    try{ const r = await api('/api/members',{name:nm,emoji:pickedEmoji}); myId=r.member.id; localStorage.setItem('lm_me',myId); closeModal(); confetti(true); await load(); }catch(err){ toast('⚠️ '+err.message); }
+    return;
+  }
+  if (b.id==='pinGo'){ pin=$('#pinIn').value.trim(); localStorage.setItem('lm_pin',pin); closeModal(); try{ await load(); if(!S.members[myId]) showWho(); }catch(err){} return; }
+  if (b.dataset.mission){
+    const k=b.dataset.mission; const was = !!compute().R[me.id].todayDone[k];
+    if (was){ if (!confirm(t().undo+'?')) return; await act('/api/log',{memberId:me.id,mission:k,date:today(),done:false}); return; }
+    b.classList.add('done');
+    const before = compute(); const nBefore = MISSIONS.filter(x=>before.R[me.id].todayDone[x]).length;
+    await act('/api/log',{memberId:me.id,mission:k,date:today()});
+    if (S.members[me.id]) { const n = MISSIONS.filter(x=>compute().R[me.id].todayDone[x]).length; confetti(n===4 && nBefore===3); if (n===4) toast(t().done4, 3000); }
+    return;
+  }
+  if (b.dataset.seen){ S.nudges.forEach(n=>{ if(n.to===me.id) n.seen=true; }); render(); api('/api/nudge/seen',{memberId:me.id}).catch(()=>{}); return; }
+  if (b.dataset.dare){ const r = await act('/api/challenge/done',{id:b.dataset.dare,memberId:me.id}); if (r && !r.undone) confetti(false); return; }
+  if (b.dataset.goal){ showGoal(); return; }
+  if (b.id==='goalGo'){ await act('/api/goal',{memberId:me.id,week:weekKey(),target:$('#goalT').value,reward:$('#goalR').value}); closeModal(); return; }
+  if (b.dataset.nudge){ showNudge(b.dataset.nudge); return; }
+  if (b.dataset.nudgeGo){ closeModal(); await act('/api/nudge',{from:me.id,to:b.dataset.mid,mission:b.dataset.nudgeGo}, t().nudgeSent); return; }
+  if (b.dataset.react){ await act('/api/react',{feedId:b.dataset.feed,memberId:me.id,emoji:b.dataset.react}); return; }
+  if (b.dataset.to){ dareForm.to=b.dataset.to; render(); return; }
+  if (b.dataset.text){ dareForm.text = dareForm.text===b.dataset.text ? '' : b.dataset.text; dareForm.custom=''; render(); return; }
+  if (b.dataset.pts){ dareForm.pts=+b.dataset.pts; render(); return; }
+  if (b.id==='dareGo'){
+    const text = ($('#dareCustom').value.trim()) || dareForm.text;
+    if (!text){ toast('✍️ ' + t().dareText); return; }
+    const r = await act('/api/challenge',{from:me.id,to:dareForm.to,text,pts:dareForm.pts}, '🚀');
+    if (r){ dareForm.text=''; dareForm.custom=''; render(); }
+    return;
+  }
+});
+document.addEventListener('input', e=>{ if (e.target.id==='dareCustom'){ dareForm.custom=e.target.value; if (e.target.value) dareForm.text=''; } });
+document.addEventListener('keydown', e=>{ if (e.key==='Enter'){ if ($('#newName')===document.activeElement) $('#newGo')?.click(); if ($('#pinIn')===document.activeElement) $('#pinGo')?.click(); } });
+
+// ============ arranque ============
+(async function(){
+  $('#langBtn').textContent = lang==='es'?'EN':'ES';
+  try{ await load(); if (!S.members[myId]) showWho(); }
+  catch(e){ if (!$('#pinIn')) toast('⚠️ '+e.message, 4000); }
+  connect();
+})();
+</script>
+</body>
+</html>
