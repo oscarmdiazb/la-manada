@@ -1,0 +1,11 @@
+{
+  "name": "la-manada",
+  "version": "1.0.0",
+  "description": "App familiar de ejercicio y nutrición con dinámicas sociales",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js"
+  },
+  "engines": { "node": ">=18" },
+  "license": "ISC"
+}

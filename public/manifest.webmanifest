@@ -1,0 +1,13 @@
+{
+  "name": "La Manada",
+  "short_name": "La Manada",
+  "description": "Ejercicio y buena comida, en familia",
+  "start_url": "./",
+  "display": "standalone",
+  "background_color": "#F2F6F1",
+  "theme_color": "#2F6F5E",
+  "icons": [
+    { "src": "icon.png", "sizes": "512x512", "type": "image/png", "purpose": "any maskable" },
+    { "src": "icon.svg", "sizes": "any", "type": "image/svg+xml" }
+  ]
+}

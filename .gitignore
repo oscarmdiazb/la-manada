@@ -1,0 +1,5 @@
+node_modules
+data/
+.env*
+server.js.bak-json
+.DS_Store
